@@ -14,10 +14,27 @@ public class DefaultSqlSession implements SqlSession {
         this.configuration = configuration;
     }
 
+
+
+    /**
+     * 新增一条信息记录
+     * @param statementid
+     * @param params
+     * @return
+     */
+    @Override
+    public int changeInformation(String statementid, Object... params)throws Exception {
+        //将要去完成对simpleExecutor里的query方法的调用
+        SimpleExecutor simpleExecutor = new SimpleExecutor();
+        MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
+        Integer count = simpleExecutor.queryChange(configuration, mappedStatement, params);
+        return count;
+    }
+
     @Override
     public <E> List<E> selectList(String statementid, Object... params) throws Exception {
         //将要去完成对simpleExecutor里的query方法的调用
-        simpleExecutor simpleExecutor = new simpleExecutor();
+        SimpleExecutor simpleExecutor = new SimpleExecutor();
         MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
         List<Object> list = simpleExecutor.query(configuration, mappedStatement, params);
         return (List<E>) list;
@@ -45,15 +62,20 @@ public class DefaultSqlSession implements SqlSession {
                 String methodName = method.getName();
                 String className = method.getDeclaringClass().getName();
                 String statementId = className+"."+methodName;
-                // 准备参数2：params:args
-                // 获取被调用方法的返回值类型
-                Type genericReturnType = method.getGenericReturnType();
-                // 判断是否进行了 泛型类型参数化
-                if(genericReturnType instanceof ParameterizedType){
-                    List<Object> objects = selectList(statementId, args);
-                    return objects;
+                // TODO 判断使用哪个方法
+                if(methodName.contains("find")){
+                    // 准备参数2：params:args
+                    // 获取被调用方法的返回值类型
+                    Type genericReturnType = method.getGenericReturnType();
+                    // 判断是否进行了 泛型类型参数化
+                    if(genericReturnType instanceof ParameterizedType){
+                        List<Object> objects = selectList(statementId, args);
+                        return objects;
+                    }
+                    return selectOne(statementId,args);
+                }else{
+                    return changeInformation(statementId, args);
                 }
-                return selectOne(statementId,args);
             }
         });
         return (T) proxyInstance;

@@ -9,4 +9,5 @@ public interface Executor {
 
     public <E> List<E> query(Configuration configuration,MappedStatement mappedStatement,Object... params) throws Exception;
 
+    public int queryChange(Configuration configuration,MappedStatement mappedStatement,Object... params) throws Exception;
 }

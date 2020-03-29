@@ -13,6 +13,13 @@ public interface IUserDao {
     //根据条件进行用户查询
     public User findByCondition(User user) throws Exception;
 
+
     // 新增用户
-    void addUser(User user);
+    int insertInfo(User user);
+
+    // 删除用户
+    int deleteInfo(User user);
+
+    // 更新用户
+    int updateInfo(User user);
 }

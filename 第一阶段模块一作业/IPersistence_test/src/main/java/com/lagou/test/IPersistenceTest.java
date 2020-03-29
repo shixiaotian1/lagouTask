@@ -14,7 +14,7 @@ import java.util.List;
 public class IPersistenceTest {
 
     /**
-     * 作业：新增测试
+     * 作业：新增、删除、修改测试类
      * @throws Exception
      */
     @Test
@@ -27,12 +27,21 @@ public class IPersistenceTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         // 用户类入参
         User user = new User();
-        user.setId(3);
-        user.setUsername("zhangsan");
+        user.setId(5);
+        user.setUsername("wangwu");
         // 代理生成dao
         IUserDao userDao = sqlSession.getMapper(IUserDao.class);
         // 根据条件查询单个
-        userDao.addUser(user);
+        int count = userDao.insertInfo(user);
+        System.out.println(count);
+        count = userDao.deleteInfo(user);
+        System.out.println(count);
+        // 用户类入参
+        User user1 = new User();
+        user1.setId(3);
+        user1.setUsername("cat");
+        count = userDao.updateInfo(user1);
+        System.out.println(count);
     }
 
     /**

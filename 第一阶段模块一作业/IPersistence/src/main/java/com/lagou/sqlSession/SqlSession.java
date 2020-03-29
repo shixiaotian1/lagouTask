@@ -10,6 +10,8 @@ public interface SqlSession {
     //根据条件查询单个
     public <T> T selectOne(String statementid,Object... params) throws Exception;
 
+    //新增
+    public int changeInformation(String statementid,Object... params) throws Exception;
 
     //为Dao接口生成代理实现类
     public <T> T getMapper(Class<?> mapperClass);
