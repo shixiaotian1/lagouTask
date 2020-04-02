@@ -20,3 +20,24 @@
 - 给service层，添加事物
 - 从线程获取链接，判断当前线程是否已绑定链接，绑定直接返回，没有绑定则从连接池获取一个返回；
 - 1
+#####BeanFactory与ApplicationContext区别
+- BeanFactory是Spring框架中IOC容器的顶层接口，只是用来定义了一些基础功能和基础规范；
+- ApplicationContext是它的一个子接口，拥有BeanFactory的全部功能；
+#####SpringIOC XML模式配置
+#####SpringIOC 实例化Bean的三种方式
+- 使用无参构造器
+- 静态方法
+- 实例化方法
+#####Bean作用范围及生命周期
+- Scope定义Bean作用范围
+	1. singleton,单例；
+	2. prototype,原型，每次使用该类，都会返回一个新对象；
+	3. 默认单例；
+- 单例模式Bean生命周期与容器相同；原型模式中，Spring只负责创建对象，不复杂管理对象，由垃圾回收器回收；
+#####Bean标签属性
+- id、class、name、init-method、destroy-method
+#####DI依赖注入
+- set注入，使用property标签，ref注入对象，value注入值；
+- 构造器注入，使用constructor-arg标签，index表示入参位置，或者name入参名称，进行传值；
+#####SpringIOC XML和注解模式配置
+- 
