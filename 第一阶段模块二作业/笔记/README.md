@@ -79,10 +79,34 @@
 
 #####后置处理器
 - BeanPostProcessor和BeanFactoryProcessor；
-#####SpringIOC源码解读注意事项
+  #####SpringIOC源码解读注意事项
+
 - 定焦原则，抓主线；宏观原则，关注结构和流程；
+
 - 断点，观察调用栈；反调，Find Usages；
-#####Spring源码构建
+  #####Spring源码构建
+
 - 下载源码
+
 - 安装gradle5.6.3
+
 - 导入，编译工程，core-oxm-context-beans-aspects-aop，工程-tasks-compileTask.java
+
+  #####lazy-init延迟加载机制
+
+  #####spring注入循环依赖问题
+
+- 使用三级缓存方案，解决循环依赖；构造方法注入无法解决；
+
+  #####Spring AOP 声明式事务
+
+- 通过xml或者注解的配置方式，达到控制事务的目的；
+
+- 事务四大特性A（原子性）C（一致性）I（隔离性）D（持久性）
+
+- 查询事务：select @@tx_isolation;设置事务隔离级别：set session transaction isolation level xxx;
+
+- 事务解析器：@EnableTransactionManagement；
+
+- 事务拦截器： @Transactional
+
