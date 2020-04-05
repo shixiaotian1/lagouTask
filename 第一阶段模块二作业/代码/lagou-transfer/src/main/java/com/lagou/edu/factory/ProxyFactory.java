@@ -2,7 +2,7 @@ package com.lagou.edu.factory;
 
 import com.lagou.edu.annotation.Autowired;
 import com.lagou.edu.annotation.Service;
-import com.lagou.edu.pojo.Account;
+import com.lagou.edu.annotation.Transactional;
 import com.lagou.edu.utils.TransactionManager;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -18,14 +18,29 @@ import java.lang.reflect.Proxy;
  *
  * 代理对象工厂：生成代理对象的
  */
-@Service(value = "proxyFactory")
+@Service()
 public class ProxyFactory {
 
     @Autowired
     private TransactionManager transactionManager;
 
+    private Object target;
+
     public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
+    }
+
+    /**
+     * 选择使用哪种方式代理方式
+     * @return
+     */
+    public Object choiceProxy(Object object){
+        this.target = object;
+        // 判断该类是否实现了接口,无接口使用cglib动态代理，有接口使用jdk动态代理
+        if(object.getClass().getInterfaces().length == 0){
+            return getCglibProxy(object);
+        }
+        return getJdkProxy(object);
     }
 
     /**
@@ -40,19 +55,28 @@ public class ProxyFactory {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         Object result = null;
-                        try{
-                            // 开启事务(关闭事务的自动提交)
-                            transactionManager.beginTransaction();
-                            result = method.invoke(obj,args);
-                            // 提交事务
-                            transactionManager.commit();
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                            // 回滚事务
-                            transactionManager.rollback();
-                            // 抛出异常便于上层servlet捕获
-                            throw e;
+                        // 获取真实方法
+                        Method realMethod = getRealMethod(method, args);
+                        // 获取方法注解
+                        Transactional annotation = realMethod.getAnnotation(Transactional.class);
+                        transactionManager.closeTransaction();
+                        // 有事务注解，则开启事务控制
+                        if(annotation != null){
+                            try{
+                                // 开启事务(关闭事务的自动提交)
+                                transactionManager.beginTransaction();
+                                result = method.invoke(obj,args);
+                                // 提交事务
+                                transactionManager.commit();
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                                // 回滚事务
+                                transactionManager.rollback();
+                                // 抛出异常便于上层servlet捕获
+                                throw e;
+                            }
                         }
+                        result = method.invoke(obj,args);
                         return result;
                     }
                 });
@@ -69,21 +93,50 @@ public class ProxyFactory {
             @Override
             public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
                 Object result = null;
-                try{
-                    // 开启事务(关闭事务的自动提交)
-                    transactionManager.beginTransaction();
-                    result = method.invoke(obj,objects);
-                    // 提交事务
-                    transactionManager.commit();
-                }catch (Exception e) {
-                    e.printStackTrace();
-                    // 回滚事务
-                    transactionManager.rollback();
-                    // 抛出异常便于上层servlet捕获
-                    throw e;
+                // 获取方法注解
+                Transactional annotation = method.getAnnotation(Transactional.class);
+                transactionManager.closeTransaction();
+                if(annotation != null){
+                    try{
+                        // 开启事务(关闭事务的自动提交)
+                        transactionManager.beginTransaction();
+                        result = method.invoke(obj,objects);
+                        // 提交事务
+                        transactionManager.commit();
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                        // 回滚事务
+                        transactionManager.rollback();
+                        // 抛出异常便于上层servlet捕获
+                        throw e;
+                    }
                 }
+                result = method.invoke(obj,objects);
                 return result;
             }
         });
+    }
+
+    /**
+     * 获取动态代理类的真实方法
+     * @param method
+     * @param args
+     * @return
+     * @throws NoSuchMethodException
+     */
+    public Method getRealMethod(Method method, Object[] args) throws NoSuchMethodException {
+        //获取真实方法
+        Class<?> c = target.getClass();
+        Method m;
+        if(args == null){
+            m = c.getMethod(method.getName());
+        }else{
+            Class[] methodArgs = new Class[args.length];
+            for (int i = 0; i < methodArgs.length; i++) {
+                methodArgs[i] = args[i].getClass();
+            }
+            m = c.getMethod(method.getName(),methodArgs);
+        }
+        return m;
     }
 }

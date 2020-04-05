@@ -12,6 +12,9 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * 本地测试类，可删
+ */
 public class TestAnnotation {
 
     public static void main(String[] args) throws Exception {
@@ -24,6 +27,10 @@ public class TestAnnotation {
             // 获取注解，并根据注解value值，存着map中备用
             Service annotation = aClass.getAnnotation(Service.class);
             String beanKey = splicingKey(aClass, annotation.value());
+            Class<?>[] interfaces = aClass.getInterfaces();
+            if(interfaces.length == 0){
+                System.out.println("木有接口");
+            }
             map.put(beanKey, aClass.newInstance());
         }
         System.out.println(map);

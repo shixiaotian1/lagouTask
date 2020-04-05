@@ -30,7 +30,10 @@ public class TransactionManager {
         return  transactionManager;
     }*/
 
-
+    // 关闭手动事务控制
+    public void closeTransaction() throws SQLException {
+        connectionUtils.getCurrentThreadConn().setAutoCommit(true);
+    }
 
     // 开启手动事务控制
     public void beginTransaction() throws SQLException {

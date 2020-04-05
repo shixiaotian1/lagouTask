@@ -57,7 +57,6 @@ public class BeanFactory {
                 // 将类进行属性注入，并封装到Map中
                 classHandle(set);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,6 +71,7 @@ public class BeanFactory {
         for (Class<?> aClass : set) {
             // 获取注解，并根据注解value值，存着map中备用
             Service annotation = aClass.getAnnotation(Service.class);
+            // 生成一个map的key，判断有无value值
             String beanKey = splicingKey(aClass, annotation.value());
             map.put(beanKey, aClass.newInstance());
         }
@@ -87,7 +87,6 @@ public class BeanFactory {
                 field.setAccessible(true);
                 // 找到被Autowired注解的属性
                 Autowired annotation1 = field.getAnnotation(Autowired.class);
-                field.getType();
                 // 开始注入
                 if(annotation1 != null){
                     // 遍历父对象中的所有方法，找到"set" + name
@@ -96,11 +95,17 @@ public class BeanFactory {
                     for (int j = 0; j < methods.length; j++) {
                         Method method = methods[j];
                         String setMonthod = getMethodNameUpperCase(field.getName());
-                        if(method.getName().equalsIgnoreCase("set" + setMonthod)) {  // 该方法就是 setAccountDao(AccountDao accountDao)
+                        // 该方法就是 setAccountDao(AccountDao accountDao)
+                        if(method.getName().equalsIgnoreCase("set" + setMonthod)) {
                             method.invoke(parentObject, diObject);
                         }
                     }
                 }
+            }
+            // 如果是service类，使用代理创建
+            if(aClass.getSimpleName().contains("Service")){
+                ProxyFactory proxyFactory = (ProxyFactory) map.get("proxyFactory");
+                parentObject = proxyFactory.choiceProxy(parentObject);
             }
             map.put(beanKey, parentObject);
         }
@@ -157,6 +162,7 @@ public class BeanFactory {
      * @return
      */
     public static String splicingKey(Class<?> aClass, String value) throws Exception {
+        // value为空，则将类名小写作为key，value不为空，直接返回
         if(StringUtils.isEmpty(value)){
             return getMethodNameTransLowerCase(aClass.getSimpleName());
         }
@@ -176,4 +182,5 @@ public class BeanFactory {
         items[0] = (byte) ((char) items[0] - 'A' + 'a');
         return new String(items);
     }
+
 }
