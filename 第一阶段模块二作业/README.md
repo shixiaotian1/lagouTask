@@ -1,6 +1,6 @@
 ### 笔记
 
-##### 		IOC
+##### 				IOC
 
 - 控制反转；
 
@@ -11,6 +11,7 @@
 - 目的：IOC实现的类与类之间的依赖解耦；
 
   ##### DI
+  
 - DI与IOC描述的是同一样东西，只不过站在不同的角度上进行描述的
 
 - IOC是站在对象的角度上描述，对象交给谁管理和创建；
@@ -36,14 +37,17 @@
 - 从线程获取链接，判断当前线程是否已绑定链接，绑定直接返回，没有绑定则从连接池获取一个返回；
 
 - 1
-  #####BeanFactory与ApplicationContext区别
-
+  
+##### BeanFactory与ApplicationContext区别
+  
 - BeanFactory是Spring框架中IOC容器的顶层接口，只是用来定义了一些基础功能和基础规范；
 
 - ApplicationContext是它的一个子接口，拥有BeanFactory的全部功能；
-  #####SpringIOC XML模式配置
-  #####SpringIOC 实例化Bean的三种方式
+  
+  ##### SpringIOC XML模式配置
 
+  ##### SpringIOC 实例化Bean的三种方式
+  
 - 使用无参构造器
 
 - 静态方法
@@ -74,6 +78,7 @@
   ##### SpringIOC 注解模式配置
 
   - @Configuration注解，表明当前类是一个配置类；
+
   - @ComponentScan注解，扫描包；
   - @PropertySource注解，引入外部属性配置文件；
   - @Import引入其他配置类；
