@@ -22,3 +22,24 @@
 - MultipartResolver，用于上传请求，用来处理文件上传；
 - FlashMapManager，用于重定向时参数传递；
 
+##### 返回数据封装
+
+- Model、Map和ModelMap运行时具体类型是BindingAwaerModelMap；
+- ModelMap实现了Map接口；
+- BindingAwareModelMap继承了ModelMap实现了Model接口；
+
+##### 绑定日期类型参数
+
+- 自定义类型转换器，实现`Converter<String,Date>`完成字符串向日期类型转换；
+- 注册自定义类型转换器；
+
+##### Restful风格
+
+- REST(Representational State Transfer)，认为互联网中所有东西都是资源，会有一个唯一的uri标识它；
+- 根据请求方式不同，代表做不同的操作；
+
+##### Spring MVC队Restful风格的支持
+
+- 使用@PathVariable("value")注解，解析路径参数；
+- 过滤器解决post提交乱码问题`<filter/>`，encoding；
+- springMvc请求方式转换过滤器`<filter>`，hiddenHttpMethodFilter；
