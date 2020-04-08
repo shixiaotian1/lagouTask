@@ -43,3 +43,24 @@
 - 使用@PathVariable("value")注解，解析路径参数；
 - 过滤器解决post提交乱码问题`<filter/>`，encoding；
 - springMvc请求方式转换过滤器`<filter>`，hiddenHttpMethodFilter；
+
+##### Spring MVC监听器、过滤器和拦截器
+
+- Filter过滤器，对请求起到过滤作用，作用在Servlet之前；
+- Listener监听器，随Web应用启动而启动，随Web应用停止而销毁；
+- Interceptor拦截器，是框架自己组件，不会拦截静态资源，只会拦截Handler方法；
+
+##### Spring MVC拦截器
+
+- 多个拦截器，拦截器会按照顺序执行；
+
+##### Spring MVC异常处理机制
+
+- @ExceptionHandler注解方法，编写异常处理逻辑，仅在当前类中生效；
+- @ControllerAdvice注解类，全局处理异常；
+
+##### Spring MVC重定向传参
+
+- RedirectAttributes.addFlashAttribute("")设置了一个flash类型的属性，该属性会被暂存在session中，在跳转页面之后销毁；
+
+##### 
