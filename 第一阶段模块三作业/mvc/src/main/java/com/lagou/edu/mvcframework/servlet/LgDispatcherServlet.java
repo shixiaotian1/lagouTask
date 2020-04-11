@@ -1,10 +1,7 @@
 package com.lagou.edu.mvcframework.servlet;
 
 import com.lagou.demo.service.IDemoService;
-import com.lagou.edu.mvcframework.annotations.LagouAutowired;
-import com.lagou.edu.mvcframework.annotations.LagouController;
-import com.lagou.edu.mvcframework.annotations.LagouRequestMapping;
-import com.lagou.edu.mvcframework.annotations.LagouService;
+import com.lagou.edu.mvcframework.annotations.*;
 import com.lagou.edu.mvcframework.pojo.Handler;
 import org.apache.commons.lang3.StringUtils;
 
@@ -100,7 +97,7 @@ public class LgDispatcherServlet extends HttpServlet {
                 String url = baseUrl + methodUrl;    // 计算出来的url /demo/query
 
                 // 把method所有信息及url封装为一个Handler
-                Handler handler = new Handler(entry.getValue(),method, Pattern.compile(url));
+                Handler handler = new Handler(entry.getValue(),method, Pattern.compile(url), method.getAnnotation(Security.class));
 
 
                 // 计算方法的参数位置信息  // query(HttpServletRequest request, HttpServletResponse response,String name)
@@ -317,6 +314,9 @@ public class LgDispatcherServlet extends HttpServlet {
 
         Map<String, String[]> parameterMap = req.getParameterMap();
 
+        // 从request中获取用户名的参数
+        String username = req.getParameter("username");
+
         // 遍历request中所有参数  （填充除了request，response之外的参数）
         for(Map.Entry<String,String[]> param: parameterMap.entrySet()) {
             // name=1&name=2   name [1,2]
@@ -345,6 +345,14 @@ public class LgDispatcherServlet extends HttpServlet {
 
         // 最终调用handler的method属性
         try {
+            // 判断security是否为空，是否有值；
+            if(handler.getSecurity() != null && handler.getSecurity().value().length != 0 ){
+                String [] securityNames = handler.getSecurity().value();
+                if(!Arrays.asList(securityNames).contains(username)){
+                    resp.getWriter().write("401 Insufficient authority!");
+                    return;
+                }
+            }
             Object invoke = handler.getMethod().invoke(handler.getController(), paraValues);
             // 将方法返回的内容，以string的新式，写入response中
             resp.getWriter().write(invoke.toString());

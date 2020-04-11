@@ -1,6 +1,14 @@
 ### 项目说明
 
-- mvc文件夹中为作业一；
+##### 作业一
+
+- mvc文件夹为作业一代码；
+- 示例地址：http://localhost:8080/demo/query?username=lisi
+- 可成功用户：zhangsan、lisi
+
+##### 作业二
+
+
 
 ### 笔记
 

@@ -22,24 +22,12 @@ public class DemoController {
      * URL: /demo/query?name=lisi
      * @param request
      * @param response
-     * @param name
+     * @param username
      * @return
      */
-    @LagouRequestMapping("/query/success")
-    @Security("zhangsan")
-    public String querySuccess(HttpServletRequest request, HttpServletResponse response,String name) {
-        return demoService.get(name);
-    }
-
-    /**
-     * URL: /demo/query?name=lisi
-     * @param request
-     * @param response
-     * @param name
-     * @return
-     */
-    @LagouRequestMapping("/query/fail")
-    public String queryFail(HttpServletRequest request, HttpServletResponse response,String name) {
-        return demoService.get(name);
+    @LagouRequestMapping("/query")
+    @Security({"zhangsan","lisi"})
+    public String querySuccess(HttpServletRequest request, HttpServletResponse response,String username) {
+        return demoService.get(username);
     }
 }

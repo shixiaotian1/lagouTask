@@ -1,5 +1,7 @@
 package com.lagou.edu.mvcframework.pojo;
 
+import com.lagou.edu.mvcframework.annotations.Security;
+
 import javax.sound.midi.MetaEventListener;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -18,14 +20,25 @@ public class Handler {
 
     private Pattern pattern; // spring中url是支持正则的
 
+    private Security security; // 方法上面的security注解
+
     private Map<String,Integer> paramIndexMapping; // 参数顺序,是为了进行参数绑定，key是参数名，value代表是第几个参数 <name,2>
 
 
-    public Handler(Object controller, Method method, Pattern pattern) {
+    public Handler(Object controller, Method method, Pattern pattern, Security security) {
         this.controller = controller;
         this.method = method;
         this.pattern = pattern;
         this.paramIndexMapping = new HashMap<>();
+        this.security = security;
+    }
+
+    public Security getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(Security security) {
+        this.security = security;
     }
 
     public Object getController() {
