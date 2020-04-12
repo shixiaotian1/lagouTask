@@ -75,4 +75,21 @@
 
 - RedirectAttributes.addFlashAttribute("")设置了一个flash类型的属性，该属性会被暂存在session中，在跳转页面之后销毁；
 
-##### 
+##### Spring Data JPA实体
+
+- 实体类对应数据库中表；
+- 主键生成策略，@GeneratedValue()，GenerationType.IDENTITY依赖数据库中自增；GenerationType.SEQUENCE依靠序列产生主键；
+- @Cloumn(name="name")标识字段；
+
+##### Spring Data JPA应用Dao层接口规范
+
+- Dao接口层，继承`JpaRepository<T,ID>`，`JpaSpecificationExecutor<T>`接口，因为Dao是接口，所以可以多继承；
+- JpaRepository封装了基本的CRUD操作；JpaSpecificationExecutor封装了复杂的查询（分页、排序等）；
+
+##### Spring Data JPA查询方式
+
+- 调用继承接口中的方法，直接进行查询；
+- 引入jpql语句进行查询，jpql类似于sql，只不过操作的是对象和属性；
+- 引入原生sql语句进行查询，需要将nativeQuery设置为true；
+- 方法命名规则查询，方法名以findBy开头，属性名首字母大写查询；
+- 动态查询，传入specification参数；
