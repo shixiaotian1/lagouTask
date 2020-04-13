@@ -3,12 +3,17 @@
 ##### 作业一
 
 - mvc文件夹为作业一代码；
+- 代码使用maven中的tomcat7插件启动；
 - 示例地址：http://localhost:8080/demo/query?username=lisi
 - 可成功用户：zhangsan、lisi
 
 ##### 作业二
 
-
+- sss文件夹为作业二代码；
+- 代码使用maven中的tomcat7插件启动；
+- 初始登录地址：http://localhost:8080/login
+- 用户名和密码均为：admin/admin；
+- 登录使用Spring MVC拦截器实现，登录成功后用户信息会记录在session中；
 
 ### 笔记
 
