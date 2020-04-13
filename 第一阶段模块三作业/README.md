@@ -63,4 +63,8 @@
 
 - RedirectAttributes.addFlashAttribute("")设置了一个flash类型的属性，该属性会被暂存在session中，在跳转页面之后销毁；
 
-##### 
+##### Spring Data JPA
+
+- 应用于Dao层的框架，简化数据库开发，作用于Mybatis框架一样；
+- Spring Data JPA提供的一套对JPA操作更加高级的封装，是在JPA规范下专门用来运行数据持久化解决方案的；
+- 
