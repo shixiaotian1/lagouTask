@@ -23,11 +23,7 @@ public class ResumeDaoTest {
 
     @Test
     public void testSql(){
-        List<Resume> list = resumeDao.findBySql();
-        for (int i = 0; i < list.size(); i++) {
-            Resume resume =  list.get(i);
-            System.out.println(resume);
-        }
+        resumeDao.deleteById(4L);
     }
 
 }

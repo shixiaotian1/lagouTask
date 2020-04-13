@@ -11,12 +11,13 @@
     <title>用户登录</title>
 </head>
 <body>
-${msg}
+<h4>用户登录</h4>
 <form action="/login" method="post">
-    用户名：<input type="text" name="username"><br>
-    密&nbsp;&nbsp;&nbsp;码:
-    <input type="password" name="password"><br>
+    <br/>
+    用&nbsp;户&nbsp;名：<input type="text" name="username"><br/><br/>
+    密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="password" name="password"><br/><br/>
     <input type="submit" value="登录">
+    ${msg}
 </form>
 </body>
 </html>

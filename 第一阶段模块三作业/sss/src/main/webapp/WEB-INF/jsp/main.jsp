@@ -13,6 +13,7 @@
 <body>
 当前用户：${USER_SESSION.username}<a href="${pageContext.request.contextPath}/logout">退出</a><br/>
 <h4>简历列表</h4>
+<a onclick="insertResume()">新增</a>
 <div class="row margin-top-20">
     <table class="table" border="1">
         <thead>
@@ -50,15 +51,43 @@
                         "<td>"+data[i].name + "</td>" +
                         "<td>"+data[i].address + "</td>" +
                         "<td>"+data[i].phone + "</td>" +
-                        "<td>删除</td>" +
-                        "<td>修改</td>" +
+                        "<td><a onclick=deleteResume(" + data[i].id + ")>删除</a></td>" +
+                        "<td><a onclick=updateResume(" + data[i].id + ")>修改</a></td>" +
                         "</tr>";
                     $("#resumeTable").append(str1);
                 };
-                alert(data);
             }
         });
     }
+
+    /**
+     * 根据id删除数据
+     * @param id
+     */
+    function deleteResume(id){
+        // 发送ajax请求
+        $.ajax({
+            url: '/resume/deleteResume?id=' + id,
+            type: 'GET',
+            data: id,
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                alert("删除成功！");
+                // window.location.href="/main"
+                window.location.href="/main"
+            }
+        });
+    }
+
+    function insertResume(){
+        window.location.href="/insert"
+    }
+
+    function updateResume(id){
+        window.location.href="/resume/queryInfo?id=" + id;
+    }
+
 </script>
 </body>
 </html>

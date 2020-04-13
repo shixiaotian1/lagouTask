@@ -54,7 +54,6 @@ public class UserController {
     public ModelAndView toMain() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("main");
-        modelAndView.addObject(resumeService.queryAccountList());
         return modelAndView;
     }
 
@@ -64,5 +63,12 @@ public class UserController {
         session.invalidate();
         //重定向到登录页面的跳转方法
         return "redirect:login";
+    }
+
+    @RequestMapping(value = "/insert")
+    public ModelAndView toInsert(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("insert");
+        return modelAndView;
     }
 }
