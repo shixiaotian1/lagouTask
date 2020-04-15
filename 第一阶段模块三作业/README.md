@@ -102,3 +102,4 @@
 - 引入原生sql语句进行查询，需要将nativeQuery设置为true；
 - 方法命名规则查询，方法名以findBy开头，属性名首字母大写查询；
 - 动态查询，传入specification参数；
+
